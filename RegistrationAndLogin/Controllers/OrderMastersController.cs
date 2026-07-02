@@ -25,9 +25,11 @@ namespace RegistrationAndLogin.Controllers
 
                 if (SearchBy == "OrderID")
                 {
-
-                    int Id = Convert.ToInt32(SearchValue);
-                    return View(db.OrderMasters.Where(x => x.OrderID == Id || SearchValue == null).ToList());
+                    if (string.IsNullOrEmpty(SearchValue) || !int.TryParse(SearchValue, out int Id))
+                    {
+                        return View(new List<OrderMaster>());
+                    }
+                    return View(db.OrderMasters.Where(x => x.OrderID == Id).ToList());
                 }
 
                 else if (SearchBy == "Name")
